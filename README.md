@@ -7,6 +7,8 @@ https://docs.microsoft.com/en-us/aspnet/web-api/overview/getting-started-with-as
 
 https://docs.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-1
 
+http://redux.js.org/docs/basics/ExampleTodoList.html
+
 This to to Allow-Control-Allow-Origin:
 and https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi/related?hl=en-US
 

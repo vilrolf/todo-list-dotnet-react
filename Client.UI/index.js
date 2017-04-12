@@ -5,6 +5,7 @@ import { createStore } from 'redux'
 import todoApp from './src/reducers'
 import App from './src/components/App'
 import { addTodo, apiAddTodo } from './src/actions'
+import Login from './src/components/Login'
 import axios from 'axios'
 
 const baseUrl = 'http://localhost:52987';
@@ -19,11 +20,12 @@ axios.get(baseUrl + '/api/todoes').then(response => {
   }
 })
 
-store.dispatch(addTodo('Herre jesus'));
-
+store.subscribe(()=>{
+    console.log(store.getState())
+})
 render(
   <Provider store={store}>
-    <App />
+    <Login />
   </Provider>,
   document.getElementById('app')
 )

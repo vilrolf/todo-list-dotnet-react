@@ -25,14 +25,13 @@ namespace RestApi.Controllers
 
         // GET: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        public async Task<IHttpActionResult> GetUser(string email)
         {
-            User user = await db.Users.FindAsync(id);
+            User user = await db.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
             }
-
             return Ok(user);
         }
 
@@ -84,6 +83,17 @@ namespace RestApi.Controllers
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+        }
+        // LOGIN POST: api/User
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> PostUser(String email)
+        {
+            User user = await db.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
 
         // DELETE: api/Users/5

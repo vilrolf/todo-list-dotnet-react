@@ -16,7 +16,8 @@
     "react-bootstrap": "^0.30.8",
     "react-dom": "15.2.1",
     "react-redux": "^5.0.4",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "toastr": "^2.1.2"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js"
