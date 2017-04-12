@@ -19,10 +19,6 @@ namespace RestApi.Models
         {
         }
 
-        public System.Data.Entity.DbSet<RestApi.Models.Author> Authors { get; set; }
-
-        public System.Data.Entity.DbSet<RestApi.Models.Book> Books { get; set; }
-
         public System.Data.Entity.DbSet<RestApi.Models.User> Users { get; set; }
 
         public System.Data.Entity.DbSet<RestApi.Models.Todo> Todoes { get; set; }

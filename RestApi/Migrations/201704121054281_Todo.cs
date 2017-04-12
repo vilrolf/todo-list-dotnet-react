@@ -5,6 +5,10 @@ namespace RestApi.Migrations
     
     public partial class Todo : DbMigration
     {
+        internal string Title;
+
+        public int Id { get; internal set; }
+
         public override void Up()
         {
             CreateTable(

@@ -102,8 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AuthorsController.cs" />
-    <Compile Include="Controllers\BooksController.cs" />
     <Compile Include="Controllers\TodoesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -121,9 +119,11 @@
     <Compile Include="Migrations\201704121054281_Todo.Designer.cs">
       <DependentUpon>201704121054281_Todo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704121926010_RemovedUsersAndBooks.cs" />
+    <Compile Include="Migrations\201704121926010_RemovedUsersAndBooks.Designer.cs">
+      <DependentUpon>201704121926010_RemovedUsersAndBooks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Author.cs" />
-    <Compile Include="Models\Book.cs" />
     <Compile Include="Models\RestApiContext.cs" />
     <Compile Include="Models\Todo.cs" />
     <Compile Include="Models\User.cs" />
@@ -150,6 +150,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704121054281_Todo.resx">
       <DependentUpon>201704121054281_Todo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704121926010_RemovedUsersAndBooks.resx">
+      <DependentUpon>201704121926010_RemovedUsersAndBooks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
