@@ -84,7 +84,7 @@ namespace RestApi.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
-        // LOGIN POST: api/User
+        // LOGIN POST: api/Usre
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> PostUser(String email)
         {

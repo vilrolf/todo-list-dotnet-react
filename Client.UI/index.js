@@ -7,12 +7,14 @@ import App from './src/components/App'
 import { addTodo, apiAddTodo } from './src/actions'
 import Login from './src/components/Login'
 import axios from 'axios'
+import { Router, Route } from 'react-router-dom'
+import BasicExample from './src/BasicExample'
+
 
 const baseUrl = 'http://localhost:52987';
 
-
-
 let store = createStore(todoApp);
+
 axios.get(baseUrl + '/api/todoes').then(response => {
   console.log(response);
   for (let i = 0; i < response.data.length; i++) {
@@ -20,12 +22,21 @@ axios.get(baseUrl + '/api/todoes').then(response => {
   }
 })
 
-store.subscribe(()=>{
-    console.log(store.getState())
+store.subscribe(() => {
+  console.log(store.getState())
 })
+if (store.user) {
+  console.log("USERHAHA")
+}
 render(
   <Provider store={store}>
-    <Login />
+    <Router>
+      <div>
+        <h1> top of page </h1>
+        <Route exact path="/" component={Login} />
+        <Route path="/app" component={App} />
+      </div>
+    </Router>
   </Provider>,
   document.getElementById('app')
 )
