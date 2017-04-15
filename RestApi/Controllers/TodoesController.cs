@@ -27,13 +27,14 @@ namespace RestApi.Controllers
         [ResponseType(typeof(Todo))]
         public async Task<IHttpActionResult> GetTodo(int id)
         {
-            Todo todo = await db.Todoes.FindAsync(id);
-            if (todo == null)
+
+            List<Todo> todoes = await db.Todoes.Where(t => t.UserId == id).ToListAsync();
+            if (todoes == null)
             {
                 return NotFound();
             }
 
-            return Ok(todo);
+            return Ok(todoes);
         }
 
         // PUT: api/Todoes/5
