@@ -14,15 +14,13 @@ class App extends React.Component {
     console.log(this.props)
     console.log("userloaed", userLoaded)
     return (
-      <div className="container" style={{ margin: 20 }}>
+      <div >
         <UserBar />
         {userLoaded ?
           <TodoScreen />
           :
           <StartScreen />
         }
-
-
       </div>
     )
   }

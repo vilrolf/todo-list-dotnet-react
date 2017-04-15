@@ -6,6 +6,7 @@ import { addTodo, apiAddTodo } from '../actions'
 import Footer from './Footer'
 import AddTodo from '../containers/AddTodo'
 import VisibleTodoList from '../containers/VisibleTodoList'
+import { Row, Col } from 'react-bootstrap'
 
 class TodoScreen extends React.Component {
     constructor(props) {
@@ -19,12 +20,10 @@ class TodoScreen extends React.Component {
     }
     render() {
         return (
-            
-            <div>
-                <AddTodo />
-                <VisibleTodoList />
-                <Footer />
-            </div>
+            <Row>
+                <Col md={6}> <h1> TODOS </h1> </Col>
+                <Col md={6}> <h1> Done Todos </h1> </Col>
+            </Row>
         )
     }
 }

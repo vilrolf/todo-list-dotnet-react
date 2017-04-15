@@ -19,8 +19,6 @@ class Login extends React.Component {
         this.handleLoginChange = this.handleLoginChange.bind(this);
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
         console.log("props", this.props);
-
-        // Router.transitionTo('/app')
     }
 
 
@@ -39,16 +37,12 @@ class Login extends React.Component {
 
             });
     }
-
-
-    /*
-    */
     render() {
         return (
-            <Form inline>
+
+            <Form inline style={this.props.style}>
                 <FormControl type="email" onChange={this.handleLoginChange} value={this.state.login} placeholder="jane.doe@example.com" />
                 <Button onClick={this.handleLoginSubmit} bsStyle="success">Login</Button>
-
             </Form>
         )
     }
