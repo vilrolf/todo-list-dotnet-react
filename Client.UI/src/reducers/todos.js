@@ -14,6 +14,17 @@ const todos = (state = [], action) => {
 
     case 'API_ADD_TODOS':
       return action.todos;
+
+    case 'CHANGE_TODO':
+      const xIndex = state.findIndex((t) => t.Id === action.todo.Id);
+      return state.map((todo, index) => {
+        if (index !== xIndex) {
+          // This isn't the item we care about - keep it as-is 
+          return todo;
+        } //
+        return action.todo;
+      });
+
     case 'REMOVE_TODO':
       const index = state.findIndex((t) => t.Id === action.todo.Id);
       return [

@@ -9,6 +9,8 @@ import Login from './src/components/Login'
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Link, browserHistory } from 'react-router-dom'
 import BasicExample from './src/BasicExample'
+import UserBar from './src/components/UserBar'
+import UserOverView from './src/components/UserOverView'
 
 
 const baseUrl = 'http://localhost:52987';
@@ -21,8 +23,10 @@ render(
   <Provider store={store}>
     <Router >
       <div>
+        <UserBar />
         {/*<!--<Route exact path="/" component={Login} /> */}
-          <Route path="/" component={App} />
+        <Route exact path="/" component={App} />
+        <Route path="/Users" component={UserOverView} />
       </div>
     </Router>
   </Provider>,

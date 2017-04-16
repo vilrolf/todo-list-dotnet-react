@@ -3,6 +3,12 @@ import { connect } from 'react-redux'
 import Login from './Login'
 import User from './User'
 import { Navbar, Form, FormControl, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap'
+import {
+    BrowserRouter as Router,
+    browserHistory,
+    Route,
+    Link
+} from 'react-router-dom'
 
 class UserBar extends React.Component {
     constructor(props) { // .state.user.Id
@@ -10,28 +16,20 @@ class UserBar extends React.Component {
 
     }
     render() {
-
         const user = this.props.user;
         const userLoaded = (user.Email != null)
         return (
             <Navbar inverse collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="#">React-Bootstrap</a>
+                        <Link to={'/'}>To Do </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <NavItem eventKey={1} href="#">Link</NavItem>
-                        <NavItem eventKey={2} href="#">Link</NavItem>
-                        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-                            <MenuItem eventKey={3.1}>Action</MenuItem>
-                            <MenuItem eventKey={3.2}>Another action</MenuItem>
-                            <MenuItem eventKey={3.3}>Something else here</MenuItem>
-                            <MenuItem divider />
-                            <MenuItem eventKey={3.3}>Separated link</MenuItem>
-                        </NavDropdown>
+                        <NavItem eventKey={1}> <Link to={'/'}>Home </Link> </NavItem>
+                        <NavItem eventKey={2}> <Link to={'/Users'}>Users </Link> </NavItem>
                     </Nav>
                     <Nav pullRight>
                         {userLoaded ? <User /> : <Login style={{ marginRight: 20, marginTop: 5 }} />}
@@ -42,6 +40,7 @@ class UserBar extends React.Component {
     }
 }
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    state: state
 });
 export default connect(mapStateToProps)(UserBar);

@@ -1,15 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Table, FormControl } from 'react-bootstrap'
-import Todo from './Todo'
+import TodoPublic from './TodoPublic'
 
-class App extends React.Component {
+class PublicTodoList extends React.Component {
   constructor(props) {
     super(props);
     this.state = { filterStr: '', filterType: -1 }
-
-  }
-  fixTodos(todos) {
 
   }
   render() {
@@ -21,11 +18,10 @@ class App extends React.Component {
       return a.Id < b.Id
     });
 
-    const listGroupItems = sortedTodos.map((todo) => <Todo key={todo.Id} todo={todo} />)
+    const listGroupItems = sortedTodos.map((todo) => <TodoPublic key={todo.Id} todo={todo} />)
 
     return (
       <div>
-        <h3> TODOs </h3>
         <div style={{ float: 'right' }}>
           Search:
           <input
@@ -37,7 +33,6 @@ class App extends React.Component {
         <Table>
           <thead>
             <tr>
-              <th></th>
               <th>Title</th>
               <th>Description</th>
               <th>
@@ -46,21 +41,15 @@ class App extends React.Component {
                   {this.props.todoTypes.map(makeOption)}
                 </FormControl>
               </th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             {listGroupItems}
           </tbody>
-
         </Table>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  todos: state.todos,
-  todoTypes: state.todoTypes
-});
-export default connect(mapStateToProps)(App);
+export default connect()(PublicTodoList);
