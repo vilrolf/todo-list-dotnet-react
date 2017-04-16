@@ -4,6 +4,18 @@ export const addTodo = (todo) => {
     todo
   }
 }
+export const removeTodo = (todo) => {
+  return {
+    type: 'REMOVE_TODO',
+    todo
+  }
+}
+export const changeTodo = (todo) => {
+  return {
+    type: 'CHANGE_TODO',
+    todo
+  }
+}
 export const apiAddTodos = (todos) => {
   return {
     type: 'API_ADD_TODOS',

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { ListGroupItem, Button, Glyphicon } from 'react-bootstrap'
 import axios from 'axios'
 import { baseUrl } from '../Constants'
+import { removeTodo, changeTodo } from '../actions'
 
 class Todo extends React.Component {
   constructor(props) {
@@ -11,16 +12,22 @@ class Todo extends React.Component {
     this.markAsDone = this.markAsDone.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
   }
+  /*
 
+  */
   markAsDone() {
-    const todo = this.props.todo;
+    const todo = this.props.todo
     console.log("todo", todo);
-    todo.Done = !(todo.Done);
     axios.put(baseUrl + '/api/todoes/' + todo.Id, {
-      todo
-    }).then(function (response) {
-      console.log(response);
+      Description: todo.Description,
+      Done: !todo.Done,
+      Title: todo.Title,
+      TypeId: todo.TypeId,
+      UserId: todo.UserId,
+      Id: todo.Id
 
+    }).then((response) => {
+      this.props.dispatch(changeTodo(response.data))
     })
       .catch(function (error) {
         console.log(error);
@@ -28,7 +35,15 @@ class Todo extends React.Component {
       });
   }
   deleteTodo() {
+    axios.delete(baseUrl + '/api/todoes/' + this.props.todo.Id).then((response) => {
+      console.log(response);
+      this.props.dispatch(removeTodo(response.data))
 
+    })
+      .catch((error) => {
+        console.log(error);
+
+      });
   }
 
   render() {
@@ -53,14 +68,4 @@ class Todo extends React.Component {
     )
   }
 }
-
-/*
-   <tr key={todo.Id}>
-        <td> {todo.Title} </td>
-        <td> {todo.Description} </td>
-        <td> {todo.Type} </td>
-        <td> DONE </td>
-        <td> DELETE </td>
-      </tr>
-      */
 export default connect()(Todo);

@@ -6,9 +6,11 @@ import Todo from './Todo'
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    
   }
   render() {
-
+    console.log("UPDATE:", this.props.todos);
     const listGroupItems = this.props.todos.map((todo) => <Todo key={todo.Id} todo={todo} />)
 
     return (

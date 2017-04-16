@@ -41,6 +41,7 @@ namespace RestApi.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutTodo(int id, Todo todo)
         {
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -69,7 +70,7 @@ namespace RestApi.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(todo);
         }
 
         // POST: api/Todoes

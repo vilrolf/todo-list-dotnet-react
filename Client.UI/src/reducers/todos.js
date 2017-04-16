@@ -1,8 +1,7 @@
 const todos = (state = [], action) => {
-  console.log("action", action)
   switch (action.type) {
     case 'ADD_TODO':
-      return action.todo
+      return [...state, action.todo]
 
     case 'TOGGLE_TODO':
       if (state.id !== action.id) {
@@ -15,27 +14,13 @@ const todos = (state = [], action) => {
 
     case 'API_ADD_TODOS':
       return action.todos;
-
-
-    default:
-      return state
-  }
-}
-/*
-const todos = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
+    case 'REMOVE_TODO':
+      const index = state.findIndex((t) => t.Id === action.todo.Id);
       return [
-        ...state,
-        todo(undefined, action)
-      ]
-    case 'TOGGLE_TODO':
-      return state.map(t =>
-        todo(t, action)
-      )
+        ...state.slice(0, index),
+        ...state.slice(index + 1)]
     default:
       return state
   }
 }
-*/
 export default todos

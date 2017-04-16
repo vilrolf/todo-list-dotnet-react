@@ -24383,14 +24383,16 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var todos = function todos() {
 	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
 
-	  console.log("action", action);
 	  switch (action.type) {
 	    case 'ADD_TODO':
-	      return action.todo;
+	      return [].concat(_toConsumableArray(state), [action.todo]);
 
 	    case 'TOGGLE_TODO':
 	      if (state.id !== action.id) {
@@ -24403,28 +24405,15 @@
 
 	    case 'API_ADD_TODOS':
 	      return action.todos;
-
+	    case 'REMOVE_TODO':
+	      var index = state.findIndex(function (t) {
+	        return t.Id === action.todo.Id;
+	      });
+	      return [].concat(_toConsumableArray(state.slice(0, index)), _toConsumableArray(state.slice(index + 1)));
 	    default:
 	      return state;
 	  }
 	};
-	/*
-	const todos = (state = [], action) => {
-	  switch (action.type) {
-	    case 'ADD_TODO':
-	      return [
-	        ...state,
-	        todo(undefined, action)
-	      ]
-	    case 'TOGGLE_TODO':
-	      return state.map(t =>
-	        todo(t, action)
-	      )
-	    default:
-	      return state
-	  }
-	}
-	*/
 	exports.default = todos;
 
 /***/ },
@@ -26125,6 +26114,18 @@
 	var addTodo = exports.addTodo = function addTodo(todo) {
 	  return {
 	    type: 'ADD_TODO',
+	    todo: todo
+	  };
+	};
+	var removeTodo = exports.removeTodo = function removeTodo(todo) {
+	  return {
+	    type: 'REMOVE_TODO',
+	    todo: todo
+	  };
+	};
+	var changeTodo = exports.changeTodo = function changeTodo(todo) {
+	  return {
+	    type: 'CHANGE_TODO',
 	    todo: todo
 	  };
 	};
@@ -49185,7 +49186,7 @@
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
-
+	      console.log("UPDATE:", this.props.todos);
 	      var listGroupItems = this.props.todos.map(function (todo) {
 	        return _react2.default.createElement(_Todo2.default, { key: todo.Id, todo: todo });
 	      });
@@ -49272,6 +49273,8 @@
 
 	var _Constants = __webpack_require__(247);
 
+	var _actions = __webpack_require__(248);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49292,24 +49295,43 @@
 	    _this.deleteTodo = _this.deleteTodo.bind(_this);
 	    return _this;
 	  }
+	  /*
+	    */
+
 
 	  _createClass(Todo, [{
 	    key: 'markAsDone',
 	    value: function markAsDone() {
+	      var _this2 = this;
+
 	      var todo = this.props.todo;
 	      console.log("todo", todo);
-	      todo.Done = !todo.Done;
 	      _axios2.default.put(_Constants.baseUrl + '/api/todoes/' + todo.Id, {
-	        todo: todo
+	        Description: todo.Description,
+	        Done: !todo.Done,
+	        Title: todo.Title,
+	        TypeId: todo.TypeId,
+	        UserId: todo.UserId,
+	        Id: todo.Id
+
 	      }).then(function (response) {
-	        console.log(response);
+	        _this2.props.dispatch((0, _actions.changeTodo)(response.data));
 	      }).catch(function (error) {
 	        console.log(error);
 	      });
 	    }
 	  }, {
 	    key: 'deleteTodo',
-	    value: function deleteTodo() {}
+	    value: function deleteTodo() {
+	      var _this3 = this;
+
+	      _axios2.default.delete(_Constants.baseUrl + '/api/todoes/' + this.props.todo.Id).then(function (response) {
+	        console.log(response);
+	        _this3.props.dispatch((0, _actions.removeTodo)(response.data));
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -49379,17 +49401,6 @@
 
 	  return Todo;
 	}(_react2.default.Component);
-
-	/*
-	   <tr key={todo.Id}>
-	        <td> {todo.Title} </td>
-	        <td> {todo.Description} </td>
-	        <td> {todo.Type} </td>
-	        <td> DONE </td>
-	        <td> DELETE </td>
-	      </tr>
-	      */
-
 
 	exports.default = (0, _reactRedux.connect)()(Todo);
 
