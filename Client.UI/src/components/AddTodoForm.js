@@ -58,7 +58,7 @@ class AddTodoForm extends React.Component {
         const makeOption = function (x) { return <option key={x.Id} value={x.Id}> {x.Title} </option> }
         return (
             <form onSubmit={this.handleSubmit}>
-                <h3> Add ToDo </h3>
+                <h3> Add To Do </h3>
                 <FormGroup controlId={"formTitleArea"} >
                     <ControlLabel> Title </ControlLabel>
                     <FormControl value={this.state.title} onChange={this.handleChangeTitle} placeholder={"Title"} type={"text"} label={"title"} />

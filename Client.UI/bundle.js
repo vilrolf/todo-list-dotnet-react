@@ -48693,10 +48693,10 @@
 	                _react2.default.createElement(
 	                    'h1',
 	                    null,
-	                    'Hello, this is a simple TODO APP!'
+	                    'To Do!'
 	                ),
 	                _react2.default.createElement(
-	                    'p',
+	                    'h3',
 	                    null,
 	                    'Made for ACOS'
 	                ),
@@ -49263,7 +49263,7 @@
 	        _react2.default.createElement(
 	          'h3',
 	          null,
-	          ' TODOs '
+	          ' To Dos '
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -49606,7 +49606,7 @@
 	                _react2.default.createElement(
 	                    'h3',
 	                    null,
-	                    ' Add ToDo '
+	                    ' Add To Do '
 	                ),
 	                _react2.default.createElement(
 	                    _reactBootstrap.FormGroup,

@@ -11,8 +11,8 @@ class StartScreen extends React.Component {
     render() {
         return (
             <Jumbotron style={{ paddingTop: 50 }}>
-                <h1>Hello, this is a simple TODO APP!</h1>
-                <p>Made for ACOS</p>
+                <h1>To Do!</h1>
+                <h3>Made for ACOS</h3>
                 <Grid>
                     <Row className="show-grid">
                         <Col md={6} mdPush={6}><h2>Login </h2> <Login /></Col>

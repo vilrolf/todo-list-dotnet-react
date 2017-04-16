@@ -25,7 +25,7 @@ class App extends React.Component {
 
     return (
       <div>
-        <h3> TODOs </h3>
+        <h3> To Dos </h3>
         <div style={{ float: 'right' }}>
           Search:
           <input
