@@ -18,5 +18,11 @@ namespace RestApi.Models
         public int UserId { get; set; }
         // Navigation property
         public User User { get; set; }
+
+        public int? TypeId { get; set; }
+
+        public virtual TodoType Type { get; set; }
+
+        public string Description { get; set; }
     }
 }

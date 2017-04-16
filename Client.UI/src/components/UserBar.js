@@ -13,7 +13,6 @@ class UserBar extends React.Component {
 
         const user = this.props.user;
         const userLoaded = (user.Email != null)
-        console.log("USER", userLoaded)
         return (
             <Navbar inverse collapseOnSelect>
                 <Navbar.Header>
@@ -35,14 +34,14 @@ class UserBar extends React.Component {
                         </NavDropdown>
                     </Nav>
                     <Nav pullRight>
-                        {userLoaded ? <User /> : <Login style={{marginRight: 20, marginTop: 5}} /> }
+                        {userLoaded ? <User /> : <Login style={{ marginRight: 20, marginTop: 5 }} />}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-                )
+        )
     }
 }
 const mapStateToProps = (state) => ({
-                    user: state.user
+    user: state.user
 });
 export default connect(mapStateToProps)(UserBar);

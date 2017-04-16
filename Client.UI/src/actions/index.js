@@ -1,35 +1,13 @@
-import axios from 'axios'
-
-const baseUrl = 'http://localhost:52987';
-
-let nextTodoId = 9999
-export const addTodo = (text) => {
-let data;
-axios.post(baseUrl + '/api/todoes', {
-  Title: text,
-  UserId: 1,
-  Done: false,
-})
-  .then(function (response) {
-    console.log(response);
-    data = response.data;
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+export const addTodo = (todo) => {
   return {
     type: 'ADD_TODO',
-    id: nextTodoId++,
-    completed: false,
-    text
+    todo
   }
 }
-export const apiAddTodo = (todoObj) => {
+export const apiAddTodos = (todos) => {
   return {
-    type: 'ADD_TODO',
-    id: todoObj.Id,
-    text: todoObj.Title,
-    completed: todoObj.Done,
+    type: 'API_ADD_TODOS',
+    todos
   }
 }
 
@@ -50,5 +28,11 @@ export const login = (user) => {
   return {
     type: 'LOGIN',
     user
+  }
+}
+export const apiAddTodoTypes = (todoTypes) => {
+  return {
+    type : 'API_ADD_TODO_TYPES',
+    todoTypes
   }
 }

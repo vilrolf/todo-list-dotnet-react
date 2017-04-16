@@ -18,7 +18,6 @@ class Login extends React.Component {
         this.state = { login: '' };
         this.handleLoginChange = this.handleLoginChange.bind(this);
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-        console.log("props", this.props);
     }
 
 

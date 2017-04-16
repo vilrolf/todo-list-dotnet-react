@@ -22,5 +22,7 @@ namespace RestApi.Models
         public System.Data.Entity.DbSet<RestApi.Models.User> Users { get; set; }
 
         public System.Data.Entity.DbSet<RestApi.Models.Todo> Todoes { get; set; }
+
+        public System.Data.Entity.DbSet<RestApi.Models.TodoType> TodoTypes { get; set; }
     }
 }

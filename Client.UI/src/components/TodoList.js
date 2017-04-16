@@ -1,27 +1,40 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
+import { Table } from 'react-bootstrap'
 import Todo from './Todo'
 
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
 
+    const listGroupItems = this.props.todos.map((todo) => <Todo key={todo.Id} todo={todo} />)
 
-const TodoList = ({ todos, onTodoClick }) => (
-  <ul>
-    {todos.map(todo =>
-      <Todo
-        key={todo.id}
-        {...todo}
-        onClick={() => onTodoClick(todo.id)}
-      />
-    )}
-  </ul>
-)
+    return (
+      <div>
+        <h3> TODOs </h3>
+        <Table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {listGroupItems}
+          </tbody>
 
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    completed: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired
-  }).isRequired).isRequired,
-  onTodoClick: PropTypes.func.isRequired
+        </Table>
+      </div>
+    )
+  }
 }
 
-export default TodoList
+const mapStateToProps = (state) => ({
+  todos: state.todos
+});
+export default connect(mapStateToProps)(App);

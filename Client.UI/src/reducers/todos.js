@@ -1,11 +1,9 @@
-const todo = (state = {}, action) => {
+const todos = (state = [], action) => {
+  console.log("action", action)
   switch (action.type) {
     case 'ADD_TODO':
-      return {
-        id: action.id,
-        text: action.text,
-        completed: action.completed
-      }
+      return action.todo
+
     case 'TOGGLE_TODO':
       if (state.id !== action.id) {
         return state
@@ -15,11 +13,15 @@ const todo = (state = {}, action) => {
         completed: !state.completed
       })
 
+    case 'API_ADD_TODOS':
+      return action.todos;
+
+
     default:
       return state
   }
 }
-
+/*
 const todos = (state = [], action) => {
   switch (action.type) {
     case 'ADD_TODO':
@@ -35,5 +37,5 @@ const todos = (state = [], action) => {
       return state
   }
 }
-
+*/
 export default todos

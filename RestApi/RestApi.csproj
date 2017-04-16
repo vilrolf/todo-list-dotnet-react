@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\TodoesController.cs" />
+    <Compile Include="Controllers\TodoTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -123,9 +124,14 @@
     <Compile Include="Migrations\201704121926010_RemovedUsersAndBooks.Designer.cs">
       <DependentUpon>201704121926010_RemovedUsersAndBooks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704161147416_TodoType.cs" />
+    <Compile Include="Migrations\201704161147416_TodoType.Designer.cs">
+      <DependentUpon>201704161147416_TodoType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\RestApiContext.cs" />
     <Compile Include="Models\Todo.cs" />
+    <Compile Include="Models\TodoType.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -153,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704121926010_RemovedUsersAndBooks.resx">
       <DependentUpon>201704121926010_RemovedUsersAndBooks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704161147416_TodoType.resx">
+      <DependentUpon>201704161147416_TodoType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

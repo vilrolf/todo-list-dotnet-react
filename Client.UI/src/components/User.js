@@ -13,7 +13,7 @@ class User extends React.Component {
         const user = this.props.user;
 
         return (
-            <NavDropdown  style={{marginRight: 15}} bsStyle={'primary'} title={user.Email.toLowerCase()} id="dropDownUser">
+            <NavDropdown  style={{marginRight: 15}} title={user.Email.toLowerCase()} id="dropDownUser">
                 <MenuItem eventKey="1">Action</MenuItem>
                 <MenuItem eventKey="2">Another action</MenuItem>
                 <MenuItem eventKey="3">Active Item</MenuItem>

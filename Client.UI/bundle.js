@@ -24359,11 +24359,16 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
+	var _todoTypes = __webpack_require__(549);
+
+	var _todoTypes2 = _interopRequireDefault(_todoTypes);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var todoApp = (0, _redux.combineReducers)({
 	  user: _login2.default,
 	  todos: _todos2.default,
+	  todoTypes: _todoTypes2.default,
 	  visibilityFilter: _visibilityFilter2.default
 	});
 
@@ -24378,20 +24383,15 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	var todo = function todo() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var todos = function todos() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	  var action = arguments[1];
 
+	  console.log("action", action);
 	  switch (action.type) {
 	    case 'ADD_TODO':
-	      return {
-	        id: action.id,
-	        text: action.text,
-	        completed: action.completed
-	      };
+	      return action.todo;
+
 	    case 'TOGGLE_TODO':
 	      if (state.id !== action.id) {
 	        return state;
@@ -24401,27 +24401,30 @@
 	        completed: !state.completed
 	      });
 
+	    case 'API_ADD_TODOS':
+	      return action.todos;
+
 	    default:
 	      return state;
 	  }
 	};
-
-	var todos = function todos() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	  var action = arguments[1];
-
+	/*
+	const todos = (state = [], action) => {
 	  switch (action.type) {
 	    case 'ADD_TODO':
-	      return [].concat(_toConsumableArray(state), [todo(undefined, action)]);
+	      return [
+	        ...state,
+	        todo(undefined, action)
+	      ]
 	    case 'TOGGLE_TODO':
-	      return state.map(function (t) {
-	        return todo(t, action);
-	      });
+	      return state.map(t =>
+	        todo(t, action)
+	      )
 	    default:
-	      return state;
+	      return state
 	  }
-	};
-
+	}
+	*/
 	exports.default = todos;
 
 /***/ },
@@ -24523,8 +24526,6 @@
 	    key: 'render',
 	    value: function render() {
 	      var userLoaded = this.props.state.user.Email != null;
-	      console.log(this.props);
-	      console.log("userloaed", userLoaded);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -24596,7 +24597,6 @@
 
 	            var user = this.props.user;
 	            var userLoaded = user.Email != null;
-	            console.log("USER", userLoaded);
 	            return _react2.default.createElement(
 	                _reactBootstrap.Navbar,
 	                { inverse: true, collapseOnSelect: true },
@@ -24725,7 +24725,6 @@
 	        _this.state = { login: '' };
 	        _this.handleLoginChange = _this.handleLoginChange.bind(_this);
 	        _this.handleLoginSubmit = _this.handleLoginSubmit.bind(_this);
-	        console.log("props", _this.props);
 	        return _this;
 	    }
 
@@ -26116,49 +26115,23 @@
 
 /***/ },
 /* 248 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.login = exports.toggleTodo = exports.setVisibilityFilter = exports.apiAddTodo = exports.addTodo = undefined;
-
-	var _axios = __webpack_require__(225);
-
-	var _axios2 = _interopRequireDefault(_axios);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var baseUrl = 'http://localhost:52987';
-
-	var nextTodoId = 9999;
-	var addTodo = exports.addTodo = function addTodo(text) {
-	  var data = void 0;
-	  _axios2.default.post(baseUrl + '/api/todoes', {
-	    Title: text,
-	    UserId: 1,
-	    Done: false
-	  }).then(function (response) {
-	    console.log(response);
-	    data = response.data;
-	  }).catch(function (error) {
-	    console.log(error);
-	  });
+	var addTodo = exports.addTodo = function addTodo(todo) {
 	  return {
 	    type: 'ADD_TODO',
-	    id: nextTodoId++,
-	    completed: false,
-	    text: text
+	    todo: todo
 	  };
 	};
-	var apiAddTodo = exports.apiAddTodo = function apiAddTodo(todoObj) {
+	var apiAddTodos = exports.apiAddTodos = function apiAddTodos(todos) {
 	  return {
-	    type: 'ADD_TODO',
-	    id: todoObj.Id,
-	    text: todoObj.Title,
-	    completed: todoObj.Done
+	    type: 'API_ADD_TODOS',
+	    todos: todos
 	  };
 	};
 
@@ -26179,6 +26152,12 @@
 	  return {
 	    type: 'LOGIN',
 	    user: user
+	  };
+	};
+	var apiAddTodoTypes = exports.apiAddTodoTypes = function apiAddTodoTypes(todoTypes) {
+	  return {
+	    type: 'API_ADD_TODO_TYPES',
+	    todoTypes: todoTypes
 	  };
 	};
 
@@ -48585,7 +48564,7 @@
 
 	            return _react2.default.createElement(
 	                _reactBootstrap.NavDropdown,
-	                { style: { marginRight: 15 }, bsStyle: 'primary', title: user.Email.toLowerCase(), id: 'dropDownUser' },
+	                { style: { marginRight: 15 }, title: user.Email.toLowerCase(), id: 'dropDownUser' },
 	                _react2.default.createElement(
 	                    _reactBootstrap.MenuItem,
 	                    { eventKey: '1' },
@@ -48742,6 +48721,12 @@
 
 	var _reactBootstrap = __webpack_require__(249);
 
+	var _axios = __webpack_require__(225);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _Constants = __webpack_require__(247);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48773,7 +48758,7 @@
 	    }, {
 	        key: 'handleRegisterSubmit',
 	        value: function handleRegisterSubmit(event) {
-	            axios.post(baseUrl + '/api/users', {
+	            _axios2.default.post(_Constants.baseUrl + '/api/users', {
 	                Email: this.state.register
 	            }).then(function (response) {
 	                console.log(response);
@@ -48848,6 +48833,14 @@
 
 	var _reactBootstrap = __webpack_require__(249);
 
+	var _AddTodoForm = __webpack_require__(548);
+
+	var _AddTodoForm2 = _interopRequireDefault(_AddTodoForm);
+
+	var _TodoList = __webpack_require__(545);
+
+	var _TodoList2 = _interopRequireDefault(_TodoList);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48865,10 +48858,10 @@
 	        var _this = _possibleConstructorReturn(this, (TodoScreen.__proto__ || Object.getPrototypeOf(TodoScreen)).call(this, props));
 
 	        _axios2.default.get(_Constants.baseUrl + '/api/todoes/' + props.state.user.Id).then(function (response) {
-	            console.log(response);
-	            for (var i = 0; i < response.data.length; i++) {
-	                props.dispatch((0, _actions.apiAddTodo)(response.data[i]));
-	            }
+	            props.dispatch((0, _actions.apiAddTodos)(response.data));
+	        });
+	        _axios2.default.get(_Constants.baseUrl + '/api/todotypes/').then(function (response) {
+	            props.dispatch((0, _actions.apiAddTodoTypes)(response.data));
 	        });
 	        return _this;
 	    }
@@ -48881,24 +48874,16 @@
 	                null,
 	                _react2.default.createElement(
 	                    _reactBootstrap.Col,
-	                    { md: 6 },
+	                    { md: 4 },
 	                    ' ',
-	                    _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        ' TODOS '
-	                    ),
+	                    _react2.default.createElement(_AddTodoForm2.default, null),
 	                    ' '
 	                ),
 	                _react2.default.createElement(
 	                    _reactBootstrap.Col,
-	                    { md: 6 },
-	                    ' ',
-	                    _react2.default.createElement(
-	                        'h1',
-	                        null,
-	                        ' Done Todos '
-	                    ),
+	                    { md: 8 },
+	                    '  ',
+	                    _react2.default.createElement(_TodoList2.default, null),
 	                    ' '
 	                )
 	            );
@@ -49166,11 +49151,15 @@
 	  value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(172);
+
+	var _reactBootstrap = __webpack_require__(249);
 
 	var _Todo = __webpack_require__(546);
 
@@ -49178,34 +49167,84 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var TodoList = function TodoList(_ref) {
-	  var todos = _ref.todos,
-	      onTodoClick = _ref.onTodoClick;
-	  return _react2.default.createElement(
-	    'ul',
-	    null,
-	    todos.map(function (todo) {
-	      return _react2.default.createElement(_Todo2.default, _extends({
-	        key: todo.id
-	      }, todo, {
-	        onClick: function onClick() {
-	          return onTodoClick(todo.id);
-	        }
-	      }));
-	    })
-	  );
-	};
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	TodoList.propTypes = {
-	  todos: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-	    id: _react.PropTypes.number.isRequired,
-	    completed: _react.PropTypes.bool.isRequired,
-	    text: _react.PropTypes.string.isRequired
-	  }).isRequired).isRequired,
-	  onTodoClick: _react.PropTypes.func.isRequired
-	};
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	exports.default = TodoList;
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var App = function (_React$Component) {
+	  _inherits(App, _React$Component);
+
+	  function App(props) {
+	    _classCallCheck(this, App);
+
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+	  }
+
+	  _createClass(App, [{
+	    key: 'render',
+	    value: function render() {
+
+	      var listGroupItems = this.props.todos.map(function (todo) {
+	        return _react2.default.createElement(_Todo2.default, { key: todo.Id, todo: todo });
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          ' TODOs '
+	        ),
+	        _react2.default.createElement(
+	          _reactBootstrap.Table,
+	          null,
+	          _react2.default.createElement(
+	            'thead',
+	            null,
+	            _react2.default.createElement(
+	              'tr',
+	              null,
+	              _react2.default.createElement('th', null),
+	              _react2.default.createElement(
+	                'th',
+	                null,
+	                'Title'
+	              ),
+	              _react2.default.createElement(
+	                'th',
+	                null,
+	                'Description'
+	              ),
+	              _react2.default.createElement(
+	                'th',
+	                null,
+	                'Type'
+	              ),
+	              _react2.default.createElement('th', null)
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'tbody',
+	            null,
+	            listGroupItems
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return App;
+	}(_react2.default.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    todos: state.todos
+	  };
+	};
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(App);
 
 /***/ },
 /* 546 */
@@ -49217,35 +49256,142 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRedux = __webpack_require__(172);
+
+	var _reactBootstrap = __webpack_require__(249);
+
+	var _axios = __webpack_require__(225);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _Constants = __webpack_require__(247);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Todo = function Todo(_ref) {
-	  var onClick = _ref.onClick,
-	      completed = _ref.completed,
-	      text = _ref.text;
-	  return _react2.default.createElement(
-	    'li',
-	    {
-	      onClick: onClick,
-	      style: {
-	        textDecoration: completed ? 'line-through' : 'none'
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Todo = function (_React$Component) {
+	  _inherits(Todo, _React$Component);
+
+	  function Todo(props) {
+	    _classCallCheck(this, Todo);
+
+	    var _this = _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).call(this, props));
+
+	    _this.markAsDone = _this.markAsDone.bind(_this);
+	    _this.deleteTodo = _this.deleteTodo.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Todo, [{
+	    key: 'markAsDone',
+	    value: function markAsDone() {
+	      var todo = this.props.todo;
+	      console.log("todo", todo);
+	      todo.Done = !todo.Done;
+	      _axios2.default.put(_Constants.baseUrl + '/api/todoes/' + todo.Id, {
+	        todo: todo
+	      }).then(function (response) {
+	        console.log(response);
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'deleteTodo',
+	    value: function deleteTodo() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var todo = this.props.todo;
+	      var type = todo.Type === null ? '' : todo.Type.Title;
+	      var trStyle = {};
+	      var buttonGlyph = "ok";
+	      if (todo.Done) {
+	        trStyle = { backgroundColor: '#dff0d8' };
+	        buttonGlyph = "minus";
 	      }
-	    },
-	    text
-	  );
-	};
 
-	Todo.propTypes = {
-	  onClick: _react.PropTypes.func.isRequired,
-	  completed: _react.PropTypes.bool.isRequired,
-	  text: _react.PropTypes.string.isRequired
-	};
+	      var style = todo.Done ? { backgroundColor: '#dff0d8' } : {};
+	      return _react2.default.createElement(
+	        'tr',
+	        { style: trStyle },
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          ' ',
+	          _react2.default.createElement(
+	            _reactBootstrap.Button,
+	            { onClick: this.markAsDone, bsStyle: 'success' },
+	            ' ',
+	            _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: buttonGlyph }),
+	            ' '
+	          ),
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          ' ',
+	          todo.Title,
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          ' ',
+	          todo.Description,
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          ' ',
+	          type,
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          ' ',
+	          _react2.default.createElement(
+	            _reactBootstrap.Button,
+	            { onClick: this.deleteTodo, bsStyle: 'danger' },
+	            ' ',
+	            _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'remove' }),
+	            ' '
+	          ),
+	          ' '
+	        )
+	      );
+	    }
+	  }]);
 
-	exports.default = Todo;
+	  return Todo;
+	}(_react2.default.Component);
+
+	/*
+	   <tr key={todo.Id}>
+	        <td> {todo.Title} </td>
+	        <td> {todo.Description} </td>
+	        <td> {todo.Type} </td>
+	        <td> DONE </td>
+	        <td> DELETE </td>
+	      </tr>
+	      */
+
+
+	exports.default = (0, _reactRedux.connect)()(Todo);
 
 /***/ },
 /* 547 */
@@ -49401,6 +49547,207 @@
 	};
 
 	exports.default = BasicExample;
+
+/***/ },
+/* 548 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(172);
+
+	var _reactBootstrap = __webpack_require__(249);
+
+	var _axios = __webpack_require__(225);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _Constants = __webpack_require__(247);
+
+	var _actions = __webpack_require__(248);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddTodoForm = function (_React$Component) {
+	    _inherits(AddTodoForm, _React$Component);
+
+	    function AddTodoForm(props) {
+	        _classCallCheck(this, AddTodoForm);
+
+	        var _this = _possibleConstructorReturn(this, (AddTodoForm.__proto__ || Object.getPrototypeOf(AddTodoForm)).call(this, props));
+
+	        _this.state = { title: '', description: '', type: 'noType' };
+
+	        _this.handleChangeSelect = _this.handleChangeSelect.bind(_this);
+	        _this.handleChangeTitle = _this.handleChangeTitle.bind(_this);
+	        _this.handleChangeDescription = _this.handleChangeDescription.bind(_this);
+	        _this.handleSubmit = _this.handleSubmit.bind(_this);
+
+	        return _this;
+	    }
+
+	    _createClass(AddTodoForm, [{
+	        key: 'handleChangeSelect',
+	        value: function handleChangeSelect(event) {
+	            this.setState({ type: event.target.value });
+	            if (event.target.value === 'newType') {
+	                console.log("TODO ADD NEW TYPE");
+	                this.setState({ type: 'noType' });
+	            }
+	        }
+	    }, {
+	        key: 'handleChangeTitle',
+	        value: function handleChangeTitle(event) {
+	            this.setState({ title: event.target.value });
+	        }
+	    }, {
+	        key: 'handleChangeDescription',
+	        value: function handleChangeDescription(event) {
+	            this.setState({ description: event.target.value });
+	        }
+	    }, {
+	        key: 'handleSubmit',
+	        value: function handleSubmit(event) {
+	            var _this2 = this;
+
+	            console.log(this.props);
+	            event.preventDefault();
+	            var type = this.state.type === 'noType' ? null : this.state.type;
+	            _axios2.default.post(_Constants.baseUrl + '/api/todoes', {
+	                Title: this.state.title,
+	                Description: this.state.description,
+	                TypeId: type,
+	                Done: false,
+	                UserId: this.props.user.Id
+	            }).then(function (response) {
+	                _this2.props.dispatch((0, _actions.addTodo)(response.data));
+	                console.log(response);
+	            });
+
+	            this.setState({ title: '', description: '', type: 'noType' });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var makeOption = function makeOption(x) {
+	                return _react2.default.createElement(
+	                    'option',
+	                    { key: x.Id, value: x.Id },
+	                    ' ',
+	                    x.Title,
+	                    ' '
+	                );
+	            };
+	            return _react2.default.createElement(
+	                'form',
+	                { onSubmit: this.handleSubmit },
+	                _react2.default.createElement(
+	                    'h3',
+	                    null,
+	                    ' Add ToDo '
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormGroup,
+	                    { controlId: "formTitleArea" },
+	                    _react2.default.createElement(
+	                        _reactBootstrap.ControlLabel,
+	                        null,
+	                        ' Title '
+	                    ),
+	                    _react2.default.createElement(_reactBootstrap.FormControl, { value: this.state.title, onChange: this.handleChangeTitle, placeholder: "Title", type: "text", label: "title" })
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormGroup,
+	                    { controlId: 'formTextarea' },
+	                    _react2.default.createElement(
+	                        _reactBootstrap.ControlLabel,
+	                        null,
+	                        'Description'
+	                    ),
+	                    _react2.default.createElement(_reactBootstrap.FormControl, { value: this.state.description, onChange: this.handleChangeDescription, componentClass: 'textarea', placeholder: 'Description' })
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormGroup,
+	                    { controlId: 'formControlsSelect' },
+	                    _react2.default.createElement(
+	                        _reactBootstrap.ControlLabel,
+	                        null,
+	                        'Type'
+	                    ),
+	                    _react2.default.createElement(
+	                        _reactBootstrap.FormControl,
+	                        { value: this.state.type, onChange: this.handleChangeSelect, componentClass: 'select', placeholder: 'Type' },
+	                        _react2.default.createElement(
+	                            'option',
+	                            { value: "noType" },
+	                            'No Type'
+	                        ),
+	                        this.props.todoTypes.map(makeOption),
+	                        _react2.default.createElement(
+	                            'option',
+	                            { value: "newType" },
+	                            ' Add new Type '
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.Button,
+	                    { type: 'submit' },
+	                    'Submit'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return AddTodoForm;
+	}(_react2.default.Component);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        todoTypes: state.todoTypes,
+	        user: state.user
+	    };
+	};
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(AddTodoForm);
+
+/***/ },
+/* 549 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var todoTypes = function todoTypes() {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case 'API_ADD_TODO_TYPES':
+	            return action.todoTypes;
+	        default:
+	            return state;
+	    }
+	};
+
+	exports.default = todoTypes;
 
 /***/ }
 /******/ ]);

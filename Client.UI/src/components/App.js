@@ -11,8 +11,6 @@ class App extends React.Component {
   }
   render() {
     const userLoaded = (this.props.state.user.Email != null)
-    console.log(this.props)
-    console.log("userloaed", userLoaded)
     return (
       <div >
         <UserBar />

@@ -13,45 +13,44 @@ using RestApi.Models;
 
 namespace RestApi.Controllers
 {
-    public class TodoesController : ApiController
+    public class TodoTypesController : ApiController
     {
         private RestApiContext db = new RestApiContext();
 
-        // GET: api/Todoes
-        public IQueryable<Todo> GetTodoes()
+        // GET: api/TodoTypes
+        public IQueryable<TodoType> GetTodoTypes()
         {
-            return db.Todoes;
+            return db.TodoTypes;
         }
 
-        // GET: api/Todoes/5 - Returns all todoes from user at id
-        [ResponseType(typeof(Todo))]
-        public async Task<IHttpActionResult> GetTodo(int id)
+        // GET: api/TodoTypes/5
+        [ResponseType(typeof(TodoType))]
+        public async Task<IHttpActionResult> GetTodoType(int id)
         {
-
-            List<Todo> todoes = await db.Todoes.Where(t => t.UserId == id).ToListAsync();
-            if (todoes == null)
+            TodoType todoType = await db.TodoTypes.FindAsync(id);
+            if (todoType == null)
             {
                 return NotFound();
             }
 
-            return Ok(todoes);
+            return Ok(todoType);
         }
 
-        // PUT: api/Todoes/5
+        // PUT: api/TodoTypes/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutTodo(int id, Todo todo)
+        public async Task<IHttpActionResult> PutTodoType(int id, TodoType todoType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != todo.Id)
+            if (id != todoType.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(todo).State = EntityState.Modified;
+            db.Entry(todoType).State = EntityState.Modified;
 
             try
             {
@@ -59,7 +58,7 @@ namespace RestApi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TodoExists(id))
+                if (!TodoTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -72,35 +71,35 @@ namespace RestApi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Todoes
-        [ResponseType(typeof(Todo))]
-        public async Task<IHttpActionResult> PostTodo(Todo todo)
+        // POST: api/TodoTypes
+        [ResponseType(typeof(TodoType))]
+        public async Task<IHttpActionResult> PostTodoType(TodoType todoType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Todoes.Add(todo);
+            db.TodoTypes.Add(todoType);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = todo.Id }, todo);
+            return CreatedAtRoute("DefaultApi", new { id = todoType.Id }, todoType);
         }
 
-        // DELETE: api/Todoes/5
-        [ResponseType(typeof(Todo))]
-        public async Task<IHttpActionResult> DeleteTodo(int id)
+        // DELETE: api/TodoTypes/5
+        [ResponseType(typeof(TodoType))]
+        public async Task<IHttpActionResult> DeleteTodoType(int id)
         {
-            Todo todo = await db.Todoes.FindAsync(id);
-            if (todo == null)
+            TodoType todoType = await db.TodoTypes.FindAsync(id);
+            if (todoType == null)
             {
                 return NotFound();
             }
 
-            db.Todoes.Remove(todo);
+            db.TodoTypes.Remove(todoType);
             await db.SaveChangesAsync();
 
-            return Ok(todo);
+            return Ok(todoType);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,9 +111,9 @@ namespace RestApi.Controllers
             base.Dispose(disposing);
         }
 
-        private bool TodoExists(int id)
+        private bool TodoTypeExists(int id)
         {
-            return db.Todoes.Count(e => e.Id == id) > 0;
+            return db.TodoTypes.Count(e => e.Id == id) > 0;
         }
     }
 }

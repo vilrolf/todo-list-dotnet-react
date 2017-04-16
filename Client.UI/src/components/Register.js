@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Form, FormControl } from 'react-bootstrap'
+import axios from 'axios'
+import { baseUrl } from '../Constants'
 
 class Register extends React.Component {
     constructor(props) { // .state.user.Id
