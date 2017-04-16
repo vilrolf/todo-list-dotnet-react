@@ -48782,16 +48782,51 @@
 	        var _this = _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this, props)); // .state.user.Id
 
 
-	        _this.state = { register: '' };
-	        _this.handleRegisterChange = _this.handleRegisterChange.bind(_this);
+	        _this.state = { email: '', emailValidation: null, name: '', nameValidation: null };
+	        _this.handleEmailChange = _this.handleEmailChange.bind(_this);
+	        _this.handleNameChange = _this.handleNameChange.bind(_this);
 	        _this.handleRegisterSubmit = _this.handleRegisterSubmit.bind(_this);
+	        _this.getEmailValidationState = _this.getEmailValidationState.bind(_this);
+	        _this.getNameValidationState = _this.getNameValidationState.bind(_this);
 	        return _this;
 	    }
 
 	    _createClass(Register, [{
-	        key: 'handleRegisterChange',
-	        value: function handleRegisterChange(event) {
-	            this.setState({ register: event.target.value });
+	        key: 'handleEmailChange',
+	        value: function handleEmailChange(event) {
+	            var email = event.target.value;
+	            this.getEmailValidationState(email);
+	            this.setState({ email: event.target.value });
+	        }
+	    }, {
+	        key: 'handleNameChange',
+	        value: function handleNameChange(event) {
+	            var name = event.target.value;
+	            this.getNameValidationState(name);
+	            this.setState({ name: event.target.value });
+	        }
+	    }, {
+	        key: 'getEmailValidationState',
+	        value: function getEmailValidationState(email) {
+	            var length = email.length;
+	            if (length === 0) {
+	                this.setState({ emailValidation: null });
+	            } else if (email.includes('@')) {
+	                this.setState({ emailValidation: 'success' });
+	            } else if (length > 0) {
+	                this.setState({ emailValidation: 'warning' });
+	            }
+	        }
+	    }, {
+	        key: 'getNameValidationState',
+	        value: function getNameValidationState(name) {
+	            var length = name.length;
+	            if (length === 0) {
+	                this.setState({ nameValidation: null });
+	            }
+	            if (length > 0) {
+	                this.setState({ nameValidation: 'success' });
+	            }
 	        }
 	    }, {
 	        key: 'handleRegisterSubmit',
@@ -48810,11 +48845,44 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                _reactBootstrap.Form,
-	                { inline: true },
-	                _react2.default.createElement(_reactBootstrap.FormControl, { type: 'email', onChange: this.handleRegisterChange, value: this.state.register, placeholder: 'jane.doe@example.com' }),
+	                { onSubmit: this.handleRegisterSubmit },
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormGroup,
+	                    {
+	                        controlId: 'formEmailText',
+	                        validationState: this.state.emailValidation
+	                    },
+	                    _react2.default.createElement(
+	                        _reactBootstrap.ControlLabel,
+	                        null,
+	                        'Email'
+	                    ),
+	                    _react2.default.createElement(_reactBootstrap.FormControl, { type: 'email', onChange: this.handleEmailChange, value: this.state.register, placeholder: 'Email' }),
+	                    _react2.default.createElement(_reactBootstrap.FormControl.Feedback, null),
+	                    _react2.default.createElement(
+	                        _reactBootstrap.HelpBlock,
+	                        { style: this.state.emailValidation === 'warning' ? { visibility: 'visible' } : { visibility: 'hidden' } },
+	                        'Email needs to contain a \'@\''
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    _reactBootstrap.FormGroup,
+	                    {
+	                        controlId: 'formEmailText',
+	                        validationState: this.state.nameValidation
+	                    },
+	                    _react2.default.createElement(
+	                        _reactBootstrap.ControlLabel,
+	                        null,
+	                        'Name'
+	                    ),
+	                    _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', onChange: this.handleNameChange, value: this.state.register, placeholder: 'Name' }),
+	                    _react2.default.createElement(_reactBootstrap.FormControl.Feedback, null)
+	                ),
+	                _react2.default.createElement('br', null),
 	                _react2.default.createElement(
 	                    _reactBootstrap.Button,
-	                    { onClick: this.handleRegisterSubmit, bsStyle: 'primary' },
+	                    { type: 'submit', bsStyle: 'primary' },
 	                    'Register'
 	                )
 	            );
