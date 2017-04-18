@@ -9,8 +9,9 @@ class App extends React.Component {
     this.state = { filterStr: '', filterType: -1 }
 
   }
-    
+
   render() {
+
     const makeOption = function (x) { return <option key={x.Id} value={x.Id}> {x.Title} </option> }
     const { filterStr, filterType } = this.state;
     const filteredTodos = this.props.todos.filter(e => (e.Title.includes(filterStr) || e.Description.includes(filterStr)) && (parseInt(filterType) === -1 || parseInt(filterType) === e.TypeId))
@@ -19,9 +20,10 @@ class App extends React.Component {
     });
 
     const listGroupItems = sortedTodos.map((todo) => <Todo key={todo.Id} todo={todo} />)
-
+    console.log("props TODO", this.props);
     return (
-      <div>
+
+      < div >
         <h3> To Dos </h3>
         <div style={{ float: 'right' }}>
           Search:
@@ -51,13 +53,13 @@ class App extends React.Component {
           </tbody>
 
         </Table>
-      </div>
+      </div >
     )
   }
 }
 
-const mapStateToProps = (state,ownProps) => ({
-  todos: state.todos.filter((todo) => todo.UserId === ownProps.userId),
+const mapStateToProps = (state, ownProps) => ({
+  todos: state.todos.filter((todo) => todo.UserId === ownProps.userId || todo.UserId === state.user.Id),
   todoTypes: state.todoTypes
 });
 export default connect(mapStateToProps)(App);

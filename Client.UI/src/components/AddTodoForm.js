@@ -35,13 +35,14 @@ class AddTodoForm extends React.Component {
     }
 
     handleSubmit(event) {
+        console.log(this.props);
         event.preventDefault();
         const type = (this.state.type === 'noType') ? null : this.state.type;
         let userId;
         if(this.props.admin){
             userId = this.state.userId;
         } else {
-            userId = this.props.userId;
+            userId = this.props.state.user.Id;
         }
         axios.post(baseUrl + '/api/todoes', {
             Title: this.state.title,
@@ -102,7 +103,7 @@ class AddTodoForm extends React.Component {
     }
 }
 const mapStateToProps = (state, ownProps) => ({
-    user: state.users[ownProps.i],
+    user: state.users[ownProps.i], // FIX THIS
     todoTypes: state.todoTypes
 });
 export default connect(mapStateToProps)(AddTodoForm);

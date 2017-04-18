@@ -8,6 +8,7 @@ import Register from './Register'
 import { Tab, Tabs, Row, Col, Button, Glyphicon } from 'react-bootstrap'
 import { addTodo, addUsers, apiAddTodoTypes, apiAddTodos } from '../actions'
 import UserPanel from './UserPanel'
+import ToDoTable from './ToDoTable'
 
 class UserOverview extends React.Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class UserOverview extends React.Component {
             <Accordion>
               {panels}
             </Accordion></Tab>
-          <Tab eventKey={2} title="To Do overview">ToDo Overview</Tab>
+          <Tab eventKey={2} title="To Do overview"><ToDoTable /></Tab>
           <Tab eventKey={3} title="Tab 3" disabled></Tab>
         </Tabs>
 
