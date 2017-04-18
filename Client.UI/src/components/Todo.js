@@ -17,7 +17,6 @@ class Todo extends React.Component {
   */
   markAsDone() {
     const todo = this.props.todo
-    console.log("todo", todo);
     axios.put(baseUrl + '/api/todoes/' + todo.Id, {
       Description: todo.Description,
       Done: !todo.Done,

@@ -27,21 +27,24 @@ class Login extends React.Component {
 
 
     handleLoginSubmit(event) {
+        console.log("jasd")
         axios.get(baseUrl + '/api/users/?email=' + this.state.login)
             .then((response) => {
+                console.log(response);
                 this.props.dispatch(login(response.data));
             })
             .catch(function (error) {
                 console.log(error);
 
             });
+        event.preventDefault();
     }
     render() {
         return (
 
-            <Form inline style={this.props.style}>
+            <Form onSubmit={this.handleLoginSubmit} inline style={this.props.style}>
                 <FormControl type="email" onChange={this.handleLoginChange} value={this.state.login} placeholder="jane.doe@example.com" />
-                <Button onClick={this.handleLoginSubmit} bsStyle="success">Login</Button>
+                <Button type="submit" bsStyle="success">Login</Button>
             </Form>
         )
     }

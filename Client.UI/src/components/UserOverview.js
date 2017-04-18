@@ -3,23 +3,30 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { baseUrl } from '../Constants'
 import { Accordion, Panel } from 'react-bootstrap'
-import PublicTodoList from './PublicTodoList'
+import AddTodoForm from './AddTodoForm'
+import Register from './Register'
+import { Tab, Tabs, Row, Col, Button, Glyphicon } from 'react-bootstrap'
+import { addTodo, addUsers, apiAddTodoTypes, apiAddTodos } from '../actions'
+import UserPanel from './UserPanel'
 
 class UserOverview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { users: [], todoTypes: [] }
+    if (props.state.users.length === 0) {
+      axios.get(baseUrl + '/api/todotypes/').then(response => {
+        console.log("todotypes", response.data)
+        this.props.dispatch(apiAddTodoTypes(response.data))
 
-    axios.get(baseUrl + '/api/todotypes/').then(response => {
-      console.log("todotypes", response.data)
-      this.setState({ todoTypes: this.state.todoTypes.concat(response.data) })
+      })
 
-    })
+      axios.get(baseUrl + '/api/users/').then(response => {
+        console.log(response.data)
+        this.fetchUserTodoData(response.data)
+        this.props.dispatch(addUsers(response.data))
+      })
+    } // FIRST TIME LOADING USERS
 
-    axios.get(baseUrl + '/api/users/').then(response => {
-      console.log(response.data)
-      this.fetchUserTodoData(response.data)
-    })
+
     this.fetchUserTodoData = this.fetchUserTodoData.bind(this);
     this.generateUserPanels = this.generateUserPanels.bind(this);
   }
@@ -27,13 +34,7 @@ class UserOverview extends React.Component {
   fetchUserTodoData(data) {
     for (let i = 0; i < data.length; i++) {
       axios.get(baseUrl + '/api/todoes/' + data[i].Id).then(response => {
-        const user = {
-          Id: data[i].Id,
-          Email: data[i].Email,
-          Todos: response.data
-        }
-        console.log(this.state)
-        this.setState({ users: this.state.users.concat([user]) });
+        this.props.dispatch(apiAddTodos(response.data))
 
       })
     }
@@ -42,14 +43,13 @@ class UserOverview extends React.Component {
   generateUserPanels(users) {
     let returnArray = [];
     for (let i = 0; i < users.length; i++) {
-      returnArray.push(<Panel key={users[i].Id} header={users[i].Email + " : " + users[i].Todos.length} eventKey={i}> <PublicTodoList todoTypes={this.state.todoTypes}  todos={users[i].Todos} /> </Panel>)
+      returnArray.push(<UserPanel key={users[i].Id} user={users[i]} todosLength={this.props.state.todos.filter((todo) => todo.UserId === users[i].Id).length} />)
     }
     return returnArray;
   }
 
   render() {
-    console.log("userOverview", this.state)
-    const users = this.state.users;
+    const users = this.props.state.users;
     let panels = null;
     if (users.length > 0) {
       panels = this.generateUserPanels(users)
@@ -57,10 +57,24 @@ class UserOverview extends React.Component {
 
     return (
       <div>
-        <h1> Users: {users.length} </h1>
-        <Accordion>
-          {panels}
-        </Accordion>
+        <Row>
+          <Col md={6}>
+            <Register admin />
+          </Col>
+          <Col md={6}>
+            <AddTodoForm admin users={users} />
+          </Col>
+        </Row>
+        <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
+          <Tab eventKey={1} title="User overview">
+            <h1> Users: {users.length} </h1>
+            <Accordion>
+              {panels}
+            </Accordion></Tab>
+          <Tab eventKey={2} title="To Do overview">ToDo Overview</Tab>
+          <Tab eventKey={3} title="Tab 3" disabled></Tab>
+        </Tabs>
+
       </div>
     )
   }

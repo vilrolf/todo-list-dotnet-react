@@ -12,7 +12,6 @@ class PublicTodoList extends React.Component {
   render() {
     const makeOption = function (x) { return <option key={x.Id} value={x.Id}> {x.Title} </option> }
     const { filterStr, filterType } = this.state;
-    console.log(this.state);
     const filteredTodos = this.props.todos.filter(e => (e.Title.includes(filterStr) || e.Description.includes(filterStr)) && (parseInt(filterType) === -1 || parseInt(filterType) === e.TypeId))
     const sortedTodos = filteredTodos.sort(function (a, b) {
       return a.Id < b.Id

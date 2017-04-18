@@ -78,6 +78,15 @@ namespace RestApi.Controllers
             {
                 return BadRequest(ModelState);
             }
+            if(user.Email == null || user.Name == null)
+            {
+                return BadRequest();
+            }
+            user.Email = user.Email.ToLower();
+            if (await db.Users.AnyAsync(u => u.Email == user.Email))
+            { // not really a bad request 
+                return BadRequest();
+            }
 
             db.Users.Add(user);
             await db.SaveChangesAsync();

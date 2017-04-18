@@ -1,7 +1,7 @@
 export const addTodo = (todo) => {
   return {
     type: 'ADD_TODO',
-    todo
+    todo,
   }
 }
 export const removeTodo = (todo) => {
@@ -44,7 +44,29 @@ export const login = (user) => {
 }
 export const apiAddTodoTypes = (todoTypes) => {
   return {
-    type : 'API_ADD_TODO_TYPES',
+    type: 'API_ADD_TODO_TYPES',
     todoTypes
   }
 }
+export const addUser = (user) => {
+  return {
+    type: 'ADD_USER',
+    user
+  }
+}
+
+export const addUsers = (users) => {
+  return {
+    type: 'ADD_USERS',
+    users
+  }
+}
+
+export const removeUser = (user) => { // This leaves todos with no users. 
+  return {
+    type: 'REMOVE_USER',
+    user
+  }
+}
+
+

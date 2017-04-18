@@ -128,6 +128,10 @@
     <Compile Include="Migrations\201704161147416_TodoType.Designer.cs">
       <DependentUpon>201704161147416_TodoType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704171922066_NameInUser.cs" />
+    <Compile Include="Migrations\201704171922066_NameInUser.Designer.cs">
+      <DependentUpon>201704171922066_NameInUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\RestApiContext.cs" />
     <Compile Include="Models\Todo.cs" />
@@ -162,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704161147416_TodoType.resx">
       <DependentUpon>201704161147416_TodoType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704171922066_NameInUser.resx">
+      <DependentUpon>201704171922066_NameInUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

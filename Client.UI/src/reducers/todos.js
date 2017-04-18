@@ -1,7 +1,7 @@
 const todos = (state = [], action) => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [...state, action.todo]
+      return state.concat(action.todo);
 
     case 'TOGGLE_TODO':
       if (state.id !== action.id) {
@@ -13,7 +13,7 @@ const todos = (state = [], action) => {
       })
 
     case 'API_ADD_TODOS':
-      return action.todos;
+      return state.concat(action.todos);
 
     case 'CHANGE_TODO':
       const xIndex = state.findIndex((t) => t.Id === action.todo.Id);

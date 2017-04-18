@@ -9,13 +9,10 @@ class App extends React.Component {
     this.state = { filterStr: '', filterType: -1 }
 
   }
-  fixTodos(todos) {
-
-  }
+    
   render() {
     const makeOption = function (x) { return <option key={x.Id} value={x.Id}> {x.Title} </option> }
     const { filterStr, filterType } = this.state;
-    console.log(this.state);
     const filteredTodos = this.props.todos.filter(e => (e.Title.includes(filterStr) || e.Description.includes(filterStr)) && (parseInt(filterType) === -1 || parseInt(filterType) === e.TypeId))
     const sortedTodos = filteredTodos.sort(function (a, b) {
       return a.Id < b.Id
@@ -59,8 +56,8 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  todos: state.todos,
+const mapStateToProps = (state,ownProps) => ({
+  todos: state.todos.filter((todo) => todo.UserId === ownProps.userId),
   todoTypes: state.todoTypes
 });
 export default connect(mapStateToProps)(App);
